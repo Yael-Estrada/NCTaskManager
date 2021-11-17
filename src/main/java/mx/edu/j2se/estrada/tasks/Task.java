@@ -125,6 +125,9 @@ public class Task {
             return -1;
         if(current<this.start)
             return this.start;
+        if(((current/this.interval)+1)*this.interval>this.end){
+            return -1;
+        }
         return ((current/this.interval)+1)*this.interval;
     }
 }
