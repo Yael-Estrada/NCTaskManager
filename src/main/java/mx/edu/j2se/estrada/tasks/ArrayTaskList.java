@@ -70,6 +70,12 @@ public class ArrayTaskList {
         return found;
     }
 
+    /*
+     *  It returns a list of task that starts or repeats inside the interval from "from" to "to".
+     *  @param    from          The start of the interval
+     *  @param    to            The end of the interval
+     *  @returns  ArrayTaskList The list of task between the interval.
+     */
     public ArrayTaskList incoming(int from,int to){
         ArrayTaskList coming=new ArrayTaskList();
         for(Task t:arr){
