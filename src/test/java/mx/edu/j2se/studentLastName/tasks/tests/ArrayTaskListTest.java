@@ -13,10 +13,15 @@ public class ArrayTaskListTest {
     static void beforeAll() {
         arrayTaskList=new ArrayTaskList();
         t=new Task("Contract Signing",30);
+        t.setActive(true);
         t1=new Task("Taking introduction course",32);
+        t1.setActive(true);
         t2=new Task("Picking laptop",34);
+        t2.setActive(true);
         t3=new Task("Getting up early",31,120,24);
+        t3.setActive(true);
         t4=new Task("working",35,100,8);
+        t4.setActive(true);
     }
 
 

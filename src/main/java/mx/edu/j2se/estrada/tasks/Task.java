@@ -57,6 +57,8 @@ public class Task {
         If the task is repeated, it returns the start time of the task
      */
     public int getTime() {
+        if(!this.isActive())
+            return -1;
         if(start!=-1)
             return this.start;
         else
@@ -76,12 +78,12 @@ public class Task {
     }
 
     public int getStartTime(){
-        if(this.time!=-1)
-            return this.time;
-        return this.start;
+        return this.getTime();
     }
 
     public int getEndTime(){
+        if(!this.isActive())
+            return -1;
         if(this.time!=-1)
             return this.time;
         return this.end;
@@ -105,7 +107,7 @@ public class Task {
     }
 
     public boolean isRepeated(){
-        return this.interval!=-1;
+        return this.getRepeatInterval()!=0;
     }
 
     /*
@@ -116,18 +118,35 @@ public class Task {
      *  @returns  int       The next start time task will execute
      */
     public int nextTimeAfter(int current){
+        if(!this.isActive())
+            return -1;
         if(this.time!=-1){
             if(current<this.time)
                 return this.time;
             return -1;
         }
-        if(current>this.end)
+        if(current>=this.end)
             return -1;
         if(current<this.start)
             return this.start;
-        if(((current/this.interval)+1)*this.interval>this.end){
+
+        //Caso de prueba start=5 end=20 inter=6
+        //x=5+6y      lo=0 hi=20/6=3
+        int lo=0,hi=this.end/this.interval,mid,y=-1;
+        while(lo<=hi){
+            mid=(hi+lo)>>1;
+            if((this.start+this.interval*mid)>current){
+                y=mid;
+                hi=mid-1;
+            }
+            else{
+                lo=mid+1;
+            }
+        }
+
+        if((this.start+this.interval*y)>=this.end||y==-1){
             return -1;
         }
-        return ((current/this.interval)+1)*this.interval;
+        return this.start+this.interval*y;
     }
 }
