@@ -22,6 +22,9 @@ public class Task {
 
     //Constructor of a Non-Repeated task
     public Task(String title,int time){
+        if(time<0){
+            throw new IllegalArgumentException("El tiempo no puede ser negativo");
+        }
         this.title=title;
         this.time=time;
         this.active=false;
@@ -30,6 +33,15 @@ public class Task {
 
     //Constructor of a Repeated task from start to end each interval time.
     public Task(String title, int start, int end, int interval){
+        if(start<0||end<0){
+            throw new IllegalArgumentException("El tiempo no puede ser negativo");
+        }
+        if(start>end){
+            throw new IllegalArgumentException("El inicio no puede ser mayor al final");
+        }
+        if(interval<=0){
+            throw new IllegalArgumentException("El intevalo no puede ser menor o igual a 0");
+        }
         this.title=title;
         this.start=start;
         this.end=end;
@@ -69,6 +81,9 @@ public class Task {
         If the task is repeated it turns to a non-repeated task
      */
     public void setTime(int time) {
+        if(time<0){
+            throw new IllegalArgumentException("El tiempo no puede ser negativo");
+        }
         this.time = time;
         if(this.start!=-1){
             this.start=-1;
@@ -99,6 +114,15 @@ public class Task {
         If the task is non-repeated it turns to a repeated task
      */
     public void setTime(int start,int end,int interval){
+        if(start<0||end<0){
+            throw new IllegalArgumentException("El tiempo no puede ser negativo");
+        }
+        if(start>end){
+            throw new IllegalArgumentException("El inicio no puede ser mayor al final");
+        }
+        if(interval<=0){
+            throw new IllegalArgumentException("El intevalo no puede ser menor o igual a 0");
+        }
         if(this.time!=-1)
             this.time=-1;
         this.start=start;
@@ -118,6 +142,9 @@ public class Task {
      *  @returns  int       The next start time task will execute
      */
     public int nextTimeAfter(int current){
+        if(current<0){
+            throw new IllegalArgumentException("El tiempo actual no puede ser menor a 0");
+        }
         if(!this.isActive())
             return -1;
         if(this.time!=-1){

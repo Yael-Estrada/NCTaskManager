@@ -27,6 +27,9 @@ public class ArrayTaskList {
      *  @returns  Task      The object Task at the specified index.
      */
     public Task getTask(int ind){
+        if(ind<0||ind>=len){
+            throw new IndexOutOfBoundsException("El indice está fuera de los límites");
+        }
         return arr[ind];
     }
 
@@ -35,6 +38,9 @@ public class ArrayTaskList {
      *  @param    t         The task to be inserted
      */
     public void add(Task t){
+        if(t==null){
+            throw new IllegalArgumentException("La tarea no puede ser null");
+        }
         Task[] aux=new Task[len+1];
         if(len>0)
             System.arraycopy(arr,0,aux,0,len);
