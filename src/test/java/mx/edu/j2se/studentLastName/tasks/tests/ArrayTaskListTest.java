@@ -1,7 +1,9 @@
 package mx.edu.j2se.studentLastName.tasks.tests;
 
+import mx.edu.j2se.estrada.tasks.AbstractTaskList;
 import mx.edu.j2se.estrada.tasks.ArrayTaskList;
 import mx.edu.j2se.estrada.tasks.Task;
+import mx.edu.j2se.estrada.tasks.TaskListFactory;
 import org.junit.jupiter.api.*;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -59,7 +61,7 @@ public class ArrayTaskListTest {
         Assertions.assertEquals(3,arrayTaskList.size());
         arrayTaskList.add(t3);
         arrayTaskList.add(t4);
-        ArrayTaskList coming=arrayTaskList.incoming(33,60);
+        AbstractTaskList coming=arrayTaskList.incoming(33,60, TaskListFactory.ListTypes.ARRAY);
         Assertions.assertEquals(3,coming.size());
         Assertions.assertEquals(t3,coming.getTask(1));
     }

@@ -1,7 +1,9 @@
 package mx.edu.j2se.studentLastName.tasks.tests;
 
+import mx.edu.j2se.estrada.tasks.AbstractTaskList;
 import mx.edu.j2se.estrada.tasks.LinkedTaskList;
 import mx.edu.j2se.estrada.tasks.Task;
+import mx.edu.j2se.estrada.tasks.TaskListFactory;
 import org.junit.jupiter.api.*;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -59,7 +61,7 @@ public class LinkedTaskListTest {
         Assertions.assertEquals(3,LinkedTaskList.size());
         LinkedTaskList.add(t3);
         LinkedTaskList.add(t4);
-        LinkedTaskList coming=LinkedTaskList.incoming(33,60);
+        AbstractTaskList coming=LinkedTaskList.incoming(33,60, TaskListFactory.ListTypes.LINKED);
         Assertions.assertEquals(3,coming.size());
         Assertions.assertEquals(t3,coming.getTask(1));
     }

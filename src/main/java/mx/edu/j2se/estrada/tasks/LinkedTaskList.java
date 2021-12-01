@@ -9,26 +9,22 @@ import java.util.List;
      *  but it should not change unless the tasks are added to or removed from the list.
      *
      *  @author  Yael Estrada
-     *  @version 1.0
-     *  @since   11/24/2021
+     *  @version 1.1
+     *  @since   12/1/2021
      */
-public class LinkedTaskList {
+public class LinkedTaskList extends AbstractTaskList{
         private List<Task> arr;
 
         public LinkedTaskList(){
             this.arr=new LinkedList<>();
         }
-        public int size(){
-            return arr.size();
-        }
-
         /*
          *  Returns the task in the specified index inside the array.
          *  @param    ind       The index to be returned
          *  @returns  Task      The object Task at the specified index.
          */
         public Task getTask(int ind){
-            if(ind<0||ind>=this.size()){
+            if(ind<0||ind>=super.size()){
                 throw new IndexOutOfBoundsException("El indice está fuera de los límites");
             }
             return arr.get(ind);
@@ -42,6 +38,7 @@ public class LinkedTaskList {
             if(t==null){
                 throw new IllegalArgumentException("La tarea no puede ser null");
             }
+            super.increase(1);
             arr.add(t);
         }
 
@@ -52,29 +49,11 @@ public class LinkedTaskList {
          *  @returns  boolean   True if the element existed and was removed, otherwise false.
          */
         public boolean remove(Task t){
-            return arr.remove(t);
+            if(arr.remove(t)){
+                super.decrease(1);
+                return true;
+            }
+            return false;
         }
 
-        /*
-         *  It returns a list of task that starts or repeats inside the interval from "from" to "to".
-         *  @param    from          The start of the interval
-         *  @param    to            The end of the interval
-         *  @returns  LinkedTaskList The list of task between the interval.
-         */
-        public LinkedTaskList incoming(int from, int to){
-            LinkedTaskList coming=new LinkedTaskList();
-            for(Task t:arr){
-                if(t.getTime()>=from&&t.getTime()<=to){
-                    coming.add(t);
-                }
-                else {
-                    if (t.getStartTime() < from) {
-                        if (t.nextTimeAfter(from) != -1) {
-                            coming.add(t);
-                        }
-                    }
-                }
-            }
-            return coming;
-        }
 }
