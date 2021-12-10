@@ -14,7 +14,7 @@ package mx.edu.j2se.estrada.tasks;
  *  @version 1.0
  *  @since   11/10/2021
  */
-public class Task {
+public class Task implements Cloneable{
     private String title; //Description of the task
     private boolean active; //True if the task is active
     private int time; //Start time of a non-repeated task
@@ -175,5 +175,44 @@ public class Task {
             return -1;
         }
         return this.start+this.interval*y;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash=1;
+        hash+=title.hashCode();
+        hash+=Math.abs(interval+start+end+time);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        Task t=(Task)obj;
+        return this.title==t.title&&this.active==t.active&&this.interval==t.interval&&this.start==t.start
+                &&this.end==t.end&&this.time==t.time;
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
+
+    @Override
+    public String toString() {
+        if(isRepeated()){
+            return "Task{" +
+                    "title='" + title + '\'' +
+                    ", active=" + active +
+                    ", start=" + start +
+                    ", end=" + end +
+                    ", interval=" + interval +
+                    '}';
+        }
+        return "Task{" +
+                "title='" + title + '\'' +
+                ", active=" + active +
+                ", time=" + time +
+                '}';
+
     }
 }

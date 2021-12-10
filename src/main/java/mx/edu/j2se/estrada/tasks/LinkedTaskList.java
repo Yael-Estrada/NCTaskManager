@@ -1,5 +1,6 @@
 package mx.edu.j2se.estrada.tasks;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -12,7 +13,7 @@ import java.util.List;
      *  @version 1.1
      *  @since   12/1/2021
      */
-public class LinkedTaskList extends AbstractTaskList{
+public class LinkedTaskList extends AbstractTaskList implements Iterable {
         private List<Task> arr;
 
         public LinkedTaskList(){
@@ -55,5 +56,11 @@ public class LinkedTaskList extends AbstractTaskList{
             }
             return false;
         }
+
+    @Override
+    public Iterator iterator() {
+        return arr.iterator();
+    }
+
 
 }

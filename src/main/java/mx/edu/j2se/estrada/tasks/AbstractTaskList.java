@@ -1,5 +1,9 @@
 package mx.edu.j2se.estrada.tasks;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Objects;
+
 /* Class AbstractTaskList
  *  This abstract class create the parent Class of the "ArrayTaskList" and "LinkedTaskList" classes,
  *  which shares the common methods size(),increase(),decrease() and incoming() but have their own implementation
@@ -9,7 +13,7 @@ package mx.edu.j2se.estrada.tasks;
  *  @version 1.0
  *  @since   12/1/2021
  */
-public abstract class AbstractTaskList {
+public abstract class AbstractTaskList implements Cloneable{
     protected int len;
     public int size(){
         return len;
@@ -26,7 +30,6 @@ public abstract class AbstractTaskList {
      */
     public AbstractTaskList incoming(int from,int to,TaskListFactory.ListTypes tipo){
         AbstractTaskList coming=TaskListFactory.createTaskList(tipo);
-
         for(int i=0;i<size();i++){
             Task t=getTask(i);
             if(t.getTime()>=from&&t.getTime()<=to){
@@ -46,4 +49,43 @@ public abstract class AbstractTaskList {
     public abstract Task getTask(int ind);
     public abstract void add(Task t);
     public abstract boolean remove(Task t);
+    public abstract Iterator iterator();
+
+    @Override
+    public String toString() {
+        String s="AbstractTaskList{\n";
+        Iterator<Task> it=this.iterator();
+        while(it.hasNext()){
+            s+=it.next().toString();
+            s+=",\n";
+        }
+        s+="}";
+        return s;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+       AbstractTaskList at=(AbstractTaskList) o;
+        Iterator<Task> it=this.iterator(),it2=at.iterator();
+        while(it.hasNext()){
+            if(!it.next().equals(it2.next())){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hashCode = 1;
+        Iterator<Task> it=this.iterator();
+        while(it.hasNext())
+            hashCode = 31*hashCode + (it.next()==null ? 0 : it.next().hashCode());
+        return hashCode;
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 }

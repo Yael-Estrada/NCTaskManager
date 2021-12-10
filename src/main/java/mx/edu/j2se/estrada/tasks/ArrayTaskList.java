@@ -1,5 +1,8 @@
 package mx.edu.j2se.estrada.tasks;
 
+import java.util.Arrays;
+import java.util.Iterator;
+
 /* Class ArrayTaskList
  *  This class implements a list of tasks that allows you to simultaneously work with
  *  several tasks. Tasks in the list can be repeated, the order of the tasks does not matter,
@@ -9,7 +12,7 @@ package mx.edu.j2se.estrada.tasks;
  *  @version 1.1
  *  @since   12/1/2021
  */
-public class ArrayTaskList extends AbstractTaskList{
+public class ArrayTaskList extends AbstractTaskList implements Iterable{
     private Task[] arr;
 
     public ArrayTaskList(){
@@ -73,5 +76,11 @@ public class ArrayTaskList extends AbstractTaskList{
         }
         return found;
     }
+
+    @Override
+    public Iterator iterator() {
+        return Arrays.stream(arr).iterator();
+    }
+
 
 }
