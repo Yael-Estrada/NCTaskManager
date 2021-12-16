@@ -2,6 +2,7 @@ package mx.edu.j2se.estrada.tasks;
 
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.stream.Stream;
 
 /* Class ArrayTaskList
  *  This class implements a list of tasks that allows you to simultaneously work with
@@ -17,7 +18,7 @@ public class ArrayTaskList extends AbstractTaskList implements Iterable{
 
     public ArrayTaskList(){
         this.arr=new Task[0];
-        super.len=0;
+        super.setLength(0);
     }
 
     /*
@@ -80,6 +81,11 @@ public class ArrayTaskList extends AbstractTaskList implements Iterable{
     @Override
     public Iterator iterator() {
         return Arrays.stream(arr).iterator();
+    }
+
+    @Override
+    public Stream<Task> getStream(){
+        return Stream.of(arr);
     }
 
 

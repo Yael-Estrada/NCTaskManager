@@ -3,6 +3,7 @@ package mx.edu.j2se.estrada.tasks;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 /* Class AbstractTaskList
  *  This abstract class create the parent Class of the "ArrayTaskList" and "LinkedTaskList" classes,
@@ -14,12 +15,13 @@ import java.util.Objects;
  *  @since   12/1/2021
  */
 public abstract class AbstractTaskList implements Cloneable{
-    protected int len;
+    private int len;
     public int size(){
         return len;
     }
     public void increase(int i){len+=i;}
     public void decrease(int i){len-=i;}
+    public void setLength(int i){len=i;}
 
     /*
      *  It returns a list of task that starts or repeats inside the interval from "from" to "to".
@@ -30,8 +32,7 @@ public abstract class AbstractTaskList implements Cloneable{
      */
     public AbstractTaskList incoming(int from,int to,TaskListFactory.ListTypes tipo){
         AbstractTaskList coming=TaskListFactory.createTaskList(tipo);
-        for(int i=0;i<size();i++){
-            Task t=getTask(i);
+        /*this.getStream().forEach(t->{
             if(t.getTime()>=from&&t.getTime()<=to){
                 coming.add(t);
             }
@@ -42,14 +43,13 @@ public abstract class AbstractTaskList implements Cloneable{
                     }
                 }
             }
-        }
+        });*/
+        this.getStream()
+                .filter(t->(t.getTime()>=from&&t.getTime()<=to)||(t.getTime()<from&&t.nextTimeAfter(from)!=-1))
+                .forEach(t->coming.add(t));
+
         return coming;
     }
-
-    public abstract Task getTask(int ind);
-    public abstract void add(Task t);
-    public abstract boolean remove(Task t);
-    public abstract Iterator iterator();
 
     @Override
     public String toString() {
@@ -88,4 +88,10 @@ public abstract class AbstractTaskList implements Cloneable{
     public Object clone() throws CloneNotSupportedException {
         return super.clone();
     }
+
+    public abstract Stream<Task> getStream();
+    public abstract Task getTask(int ind);
+    public abstract void add(Task t);
+    public abstract boolean remove(Task t);
+    public abstract Iterator iterator();
 }

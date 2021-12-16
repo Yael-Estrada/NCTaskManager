@@ -3,6 +3,7 @@ package mx.edu.j2se.estrada.tasks;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Stream;
 
 /* Class LinkedTaskList
      *  This class implements a list of tasks that allows you to simultaneously work with
@@ -60,6 +61,11 @@ public class LinkedTaskList extends AbstractTaskList implements Iterable {
     @Override
     public Iterator iterator() {
         return arr.iterator();
+    }
+
+    @Override
+    public Stream<Task> getStream(){
+        return arr.stream();
     }
 
 
