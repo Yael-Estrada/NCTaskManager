@@ -1,5 +1,9 @@
 package mx.edu.j2se.estrada.tasks;
 
+import java.time.LocalDateTime;
+import java.time.Period;
+import java.time.temporal.TemporalAmount;
+
 /*
  *  Class Task
  *  Implements an application to create and manage Tasks Repeated and Non-Repeated
@@ -17,37 +21,42 @@ package mx.edu.j2se.estrada.tasks;
 public class Task implements Cloneable{
     private String title; //Description of the task
     private boolean active; //True if the task is active
-    private int time; //Start time of a non-repeated task
-    private int start,end,interval; //Information of a repeated task
+    private LocalDateTime time; //Start time of a non-repeated task
+    private LocalDateTime start,end;
+    private TemporalAmount interval; //Information of a repeated task
 
     //Constructor of a Non-Repeated task
-    public Task(String title,int time){
-        if(time<0){
-            throw new IllegalArgumentException("El tiempo no puede ser negativo");
+    public Task(String title,LocalDateTime time){
+        if(time==null){
+            throw new IllegalArgumentException("La fecha no puede ser null");
         }
         this.title=title;
         this.time=time;
-        this.active=false;
-        this.start=this.end=this.interval=-1;
+        this.active=true;
+        this.start=this.end=null;
+        this.interval=null;
     }
 
     //Constructor of a Repeated task from start to end each interval time.
-    public Task(String title, int start, int end, int interval){
-        if(start<0||end<0){
-            throw new IllegalArgumentException("El tiempo no puede ser negativo");
+    public Task(String title, LocalDateTime start, LocalDateTime end, TemporalAmount interval){
+        if(start==null){
+            throw new IllegalArgumentException("La fecha de inicio no puede ser null");
         }
-        if(start>end){
-            throw new IllegalArgumentException("El inicio no puede ser mayor al final");
+        if(end==null){
+            throw new IllegalArgumentException("La fecha de fin no puede ser null");
         }
-        if(interval<=0){
-            throw new IllegalArgumentException("El intevalo no puede ser menor o igual a 0");
+        if(interval==null){
+            throw new IllegalArgumentException("El intervalo no puede ser null");
+        }
+        if(start.compareTo(end)>0){
+            throw new IllegalArgumentException("La fecha de inicio no puede ser mayor a la de fin");
         }
         this.title=title;
         this.start=start;
         this.end=end;
         this.interval=interval;
-        this.active=false;
-        this.time=-1;
+        this.active=true;
+        this.time=null;
     }
 
     public String getTitle() {
@@ -68,10 +77,10 @@ public class Task implements Cloneable{
     /*
         If the task is repeated, it returns the start time of the task
      */
-    public int getTime() {
+    public LocalDateTime getTime() {
         if(!this.isActive())
-            return -1;
-        if(start!=-1)
+            return null;
+        if(start!=null)
             return this.start;
         else
             return time;
@@ -80,58 +89,59 @@ public class Task implements Cloneable{
     /*
         If the task is repeated it turns to a non-repeated task
      */
-    public void setTime(int time) {
-        if(time<0){
-            throw new IllegalArgumentException("El tiempo no puede ser negativo");
+    public void setTime(LocalDateTime time) {
+        if(time==null){
+            throw new IllegalArgumentException("La fecha no puede ser null");
         }
         this.time = time;
-        if(this.start!=-1){
-            this.start=-1;
-            this.end=-1;
-            this.interval=-1;
+        if(this.start!=null){
+            this.start=null;
+            this.end=null;
+            this.interval=null;
         }
     }
 
-    public int getStartTime(){
+    public LocalDateTime getStartTime(){
         return this.getTime();
     }
 
-    public int getEndTime(){
+    public LocalDateTime getEndTime(){
         if(!this.isActive())
-            return -1;
-        if(this.time!=-1)
+            return null;
+        if(this.time!=null)
             return this.time;
         return this.end;
     }
 
-    public int getRepeatInterval(){
-        if(this.time!=-1)
-            return 0;
+    public TemporalAmount getRepeatInterval(){
         return this.interval;
     }
 
     /*
         If the task is non-repeated it turns to a repeated task
      */
-    public void setTime(int start,int end,int interval){
-        if(start<0||end<0){
-            throw new IllegalArgumentException("El tiempo no puede ser negativo");
+    public void setTime(LocalDateTime start,LocalDateTime end,TemporalAmount interval){
+        if(start==null){
+            throw new IllegalArgumentException("La fecha de inicio no puede ser null");
         }
-        if(start>end){
-            throw new IllegalArgumentException("El inicio no puede ser mayor al final");
+        if(end==null){
+            throw new IllegalArgumentException("La fecha de fin no puede ser null");
         }
-        if(interval<=0){
-            throw new IllegalArgumentException("El intevalo no puede ser menor o igual a 0");
+        if(interval==null){
+            throw new IllegalArgumentException("El intervalo no puede ser null");
         }
-        if(this.time!=-1)
-            this.time=-1;
+        if(start.compareTo(end)>0){
+            throw new IllegalArgumentException("La fecha de inicio no puede ser mayor a la de fin");
+        }
+        if(this.time!=null)
+            this.time=null;
         this.start=start;
         this.end=end;
         this.interval=interval;
     }
 
     public boolean isRepeated(){
-        return this.getRepeatInterval()!=0;
+        return this.getRepeatInterval()!=null;
     }
 
     /*
@@ -141,55 +151,57 @@ public class Task implements Cloneable{
      *  @param    current   The current time
      *  @returns  int       The next start time task will execute
      */
-    public int nextTimeAfter(int current){
-        if(current<0){
-            throw new IllegalArgumentException("El tiempo actual no puede ser menor a 0");
+    public LocalDateTime nextTimeAfter(LocalDateTime current){
+        if(current==null){
+            throw new IllegalArgumentException("El tiempo actual no puede ser null");
         }
         if(!this.isActive())
-            return -1;
-        if(this.time!=-1){
-            if(current<this.time)
+            return null;
+        if(this.time!=null){
+            if(current.compareTo(this.time)<0)
                 return this.time;
-            return -1;
+            return null;
         }
-        if(current>=this.end)
-            return -1;
-        if(current<this.start)
+        if(current.compareTo(this.end)>=0)
+            return null;
+        if(current.compareTo(this.start)<0)
             return this.start;
 
-        //Caso de prueba start=5 end=20 inter=6
-        //x=5+6y      lo=0 hi=20/6=3
-        int lo=0,hi=this.end/this.interval,mid,y=-1;
-        while(lo<=hi){
-            mid=(hi+lo)>>1;
-            if((this.start+this.interval*mid)>current){
-                y=mid;
-                hi=mid-1;
+        LocalDateTime actual=this.start;
+        while(actual.compareTo(this.end)<0){
+            if(actual.compareTo(current)>0){
+                break;
             }
-            else{
-                lo=mid+1;
-            }
+            actual=actual.plus(this.interval);
         }
-
-        if((this.start+this.interval*y)>=this.end||y==-1){
-            return -1;
+        if(actual.equals(this.end)){
+            return null;
         }
-        return this.start+this.interval*y;
+        return actual;
     }
 
     @Override
     public int hashCode() {
         int hash=1;
         hash+=title.hashCode();
-        hash+=Math.abs(interval+start+end+time);
+        if(isRepeated()){
+            hash+=Math.abs(interval.hashCode()+start.hashCode()+end.hashCode());
+        }
+        else
+            hash+=Math.abs(time.hashCode());
         return hash;
     }
 
     @Override
     public boolean equals(Object obj) {
         Task t=(Task)obj;
-        return this.title==t.title&&this.active==t.active&&this.interval==t.interval&&this.start==t.start
-                &&this.end==t.end&&this.time==t.time;
+        if(this.isRepeated()){
+            return this.title==t.title&&this.active==t.active&&this.interval==t.interval&&this.start.equals(t.start)
+                    &&this.end.equals(t.end);
+        }
+        else{
+            return this.title==t.title&&this.active==t.active&&this.time.equals(t.time);
+        }
     }
 
     @Override

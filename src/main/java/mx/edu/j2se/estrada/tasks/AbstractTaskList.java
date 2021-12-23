@@ -1,8 +1,7 @@
 package mx.edu.j2se.estrada.tasks;
 
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.Iterator;
-import java.util.Objects;
 import java.util.stream.Stream;
 
 /* Class AbstractTaskList
@@ -30,7 +29,7 @@ public abstract class AbstractTaskList implements Cloneable{
      *  @param    tipo             Enum type of the TaskList
      *  @returns  AbstractTaskList The list of task between the interval.
      */
-    public AbstractTaskList incoming(int from,int to,TaskListFactory.ListTypes tipo){
+    public AbstractTaskList incoming(LocalDateTime from, LocalDateTime to, TaskListFactory.ListTypes tipo){
         AbstractTaskList coming=TaskListFactory.createTaskList(tipo);
         /*this.getStream().forEach(t->{
             if(t.getTime()>=from&&t.getTime()<=to){
@@ -45,11 +44,13 @@ public abstract class AbstractTaskList implements Cloneable{
             }
         });*/
         this.getStream()
-                .filter(t->(t.getTime()>=from&&t.getTime()<=to)||(t.getTime()<from&&t.nextTimeAfter(from)!=-1))
+                .filter(t->((from.compareTo(t.getTime())<0)&&to.compareTo(t.getTime())>0)||(t.getTime().compareTo(from)<0&&t.nextTimeAfter(from)!=null))
                 .forEach(t->coming.add(t));
 
         return coming;
     }
+
+
 
     @Override
     public String toString() {
