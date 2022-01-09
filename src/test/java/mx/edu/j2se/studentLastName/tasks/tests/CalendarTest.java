@@ -19,8 +19,8 @@ public class CalendarTest {
     static void init() {
         arr= new LinkedTaskList();
         t=new Task("Lunch with a beautiful girl", LocalDateTime.parse("2022-08-24T16:00"));
-        t1=new Task("Morning run",LocalDateTime.parse("2022-03-01T08:15"),LocalDateTime.parse("2022-09-01T08:15"), Period.ofDays(1));
-        t2=new Task("Taking medication",LocalDateTime.parse("2022-08-20T08:15"),LocalDateTime.parse("2022-08-28T08:15"), Duration.ofHours(12));
+        t1=new Task("Morning run",LocalDateTime.parse("2022-03-01T08:15"),LocalDateTime.parse("2022-09-01T08:15"), Timestamp.ofDays(1));
+        t2=new Task("Taking medication",LocalDateTime.parse("2022-08-20T08:15"),LocalDateTime.parse("2022-08-28T08:15"), Timestamp.ofHours(12));
         t3=new Task("Meeting with friends",LocalDateTime.parse("2022-09-01T18:00"));
         arr.add(t);
         arr.add(t1);

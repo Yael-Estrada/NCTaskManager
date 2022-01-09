@@ -3,6 +3,7 @@ package mx.edu.j2se.studentLastName.tasks.tests;
 import mx.edu.j2se.estrada.tasks.ArrayTaskList;
 import mx.edu.j2se.estrada.tasks.LinkedTaskList;
 import mx.edu.j2se.estrada.tasks.Task;
+import mx.edu.j2se.estrada.tasks.Timestamp;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -30,7 +31,7 @@ public class TestTaskExceptions {
             Assertions.assertEquals("El intervalo no puede ser null",e.getMessage() );
         }
         try{
-            Task t3=new Task("Tarea 3",LocalDateTime.parse("2020-01-01T00:00:00"),LocalDateTime.parse("2019-01-01T00:00:00"), Period.ofWeeks(5));
+            Task t3=new Task("Tarea 3",LocalDateTime.parse("2020-01-01T00:00:00"),LocalDateTime.parse("2019-01-01T00:00:00"), Timestamp.ofDays(5));
             fail("No se cacho la excepcion");
         }
         catch(IllegalArgumentException e){

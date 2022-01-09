@@ -1,5 +1,6 @@
 package mx.edu.j2se.estrada.tasks;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Iterator;
 import java.util.stream.Stream;
@@ -13,7 +14,7 @@ import java.util.stream.Stream;
  *  @version 1.0
  *  @since   12/1/2021
  */
-public abstract class AbstractTaskList implements Cloneable{
+public abstract class AbstractTaskList implements Cloneable, Serializable{
     private int len;
     public int size(){
         return len;
@@ -69,7 +70,8 @@ public abstract class AbstractTaskList implements Cloneable{
        AbstractTaskList at=(AbstractTaskList) o;
         Iterator<Task> it=this.iterator(),it2=at.iterator();
         while(it.hasNext()){
-            if(!it.next().equals(it2.next())){
+            Task t1=it.next(),t2=it2.next();
+            if(!t1.equals(t2)){
                 return false;
             }
         }

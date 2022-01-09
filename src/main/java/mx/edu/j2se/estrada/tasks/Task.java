@@ -1,8 +1,7 @@
 package mx.edu.j2se.estrada.tasks;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.time.Period;
-import java.time.temporal.TemporalAmount;
 
 /*
  *  Class Task
@@ -18,12 +17,12 @@ import java.time.temporal.TemporalAmount;
  *  @version 1.0
  *  @since   11/10/2021
  */
-public class Task implements Cloneable{
+public class Task implements Cloneable, Serializable {
     private String title; //Description of the task
     private boolean active; //True if the task is active
     private LocalDateTime time; //Start time of a non-repeated task
     private LocalDateTime start,end;
-    private TemporalAmount interval; //Information of a repeated task
+    private Timestamp interval; //Information of a repeated task
 
     //Constructor of a Non-Repeated task
     public Task(String title,LocalDateTime time){
@@ -38,7 +37,7 @@ public class Task implements Cloneable{
     }
 
     //Constructor of a Repeated task from start to end each interval time.
-    public Task(String title, LocalDateTime start, LocalDateTime end, TemporalAmount interval){
+    public Task(String title, LocalDateTime start, LocalDateTime end, Timestamp interval){
         if(start==null){
             throw new IllegalArgumentException("La fecha de inicio no puede ser null");
         }
@@ -113,14 +112,14 @@ public class Task implements Cloneable{
         return this.end;
     }
 
-    public TemporalAmount getRepeatInterval(){
+    public Timestamp getRepeatInterval(){
         return this.interval;
     }
 
     /*
         If the task is non-repeated it turns to a repeated task
      */
-    public void setTime(LocalDateTime start,LocalDateTime end,TemporalAmount interval){
+    public void setTime(LocalDateTime start,LocalDateTime end,Timestamp interval){
         if(start==null){
             throw new IllegalArgumentException("La fecha de inicio no puede ser null");
         }
@@ -196,11 +195,11 @@ public class Task implements Cloneable{
     public boolean equals(Object obj) {
         Task t=(Task)obj;
         if(this.isRepeated()){
-            return this.title==t.title&&this.active==t.active&&this.interval==t.interval&&this.start.equals(t.start)
+            return this.title.compareTo(t.title)==0&&this.active==t.active&&this.interval.equals(t.interval)&&this.start.equals(t.start)
                     &&this.end.equals(t.end);
         }
         else{
-            return this.title==t.title&&this.active==t.active&&this.time.equals(t.time);
+            return this.title.compareTo(t.title)==0&&this.active==t.active&&this.time.equals(t.time);
         }
     }
 

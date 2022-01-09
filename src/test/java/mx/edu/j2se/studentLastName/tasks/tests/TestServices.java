@@ -8,14 +8,11 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
-import java.time.Period;
 
 public class TestServices {
     private static AbstractTaskList at,at2;
-    private static Task t;
     @BeforeAll
     static void before(){
-        t=new Task("T0", LocalDateTime.parse("2020-05-21T15:00:00"),LocalDateTime.parse("2020-09-11T04:00:00"), Period.ofDays(12));
         at= TaskListFactory.createTaskList(TaskListFactory.ListTypes.LINKED);
         at.add(new Task("T1",LocalDateTime.parse("2020-01-01T00:00:00")));
         at.add(new Task("T2",LocalDateTime.parse("2020-01-04T00:00:00")));
@@ -34,7 +31,7 @@ public class TestServices {
         Assertions.assertEquals(at.hashCode(),132470944);
         //at2= TaskListFactory.createTaskList(TaskListFactory.ListTypes.LINKED);
         at2=(AbstractTaskList) at.clone();
-        Assertions.assertTrue(at.equals(at2));
+        Assertions.assertEquals(at, at2);
         Assertions.assertEquals(at2.hashCode(),132470944);
         Assertions.assertEquals(at2.toString(),"AbstractTaskList{\n" +
                 "Task{title='T1', active=true, time=2020-01-01T00:00},\n" +

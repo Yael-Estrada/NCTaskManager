@@ -1,13 +1,9 @@
 package mx.edu.j2se.studentLastName.tasks.tests;
 
-import mx.edu.j2se.estrada.tasks.AbstractTaskList;
-import mx.edu.j2se.estrada.tasks.ArrayTaskList;
-import mx.edu.j2se.estrada.tasks.Task;
-import mx.edu.j2se.estrada.tasks.TaskListFactory;
+import mx.edu.j2se.estrada.tasks.*;
 import org.junit.jupiter.api.*;
 
 import java.time.LocalDateTime;
-import java.time.Period;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ArrayTaskListTest {
@@ -23,9 +19,9 @@ public class ArrayTaskListTest {
         t1.setActive(true);
         t2=new Task("Picking laptop",LocalDateTime.parse("2020-12-31T10:05:00")); //34
         t2.setActive(true);
-        t3=new Task("Getting up early",LocalDateTime.parse("2020-12-24T06:00:00"),LocalDateTime.parse("2021-02-01T06:00:00"), Period.ofDays(1)); //31 120 24
+        t3=new Task("Getting up early",LocalDateTime.parse("2020-12-24T06:00:00"),LocalDateTime.parse("2021-02-01T06:00:00"), Timestamp.ofDays(1)); //31 120 24
         t3.setActive(true);
-        t4=new Task("working",LocalDateTime.parse("2020-12-26T09:00:00"),LocalDateTime.parse("2021-12-30T18:00:00"),Period.ofDays(7));
+        t4=new Task("working",LocalDateTime.parse("2020-12-26T09:00:00"),LocalDateTime.parse("2021-12-30T18:00:00"), Timestamp.ofDays(7));
         t4.setActive(true);
     }
 
